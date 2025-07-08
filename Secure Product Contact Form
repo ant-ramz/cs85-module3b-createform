@@ -7,6 +7,95 @@
 <body>
 <?php
 
+$showForm = true;
+$errorCount = 0;
+$Sender = "";
+$Email = "";
+$Subject = "";
+$Message = "";
+
+// Validate Input / Borrowed from 3a 
+function validateInput($data, $fieldName) {
+    global $errorCount;
+    $retval = "";
+    if (empty($data)) {
+        echo "$fieldName is a required field.<br />\n";
+        ++$errorCount;
+    } else {
+        $retval = trim($data);
+        $retval = stripslashes($retval);
+    }
+    return $retval;
+}
+
+// Validate email field / Borrowed from 3a
+function validateEmail($data, $fieldName) {
+    global $errorCount;
+
+    if (empty($data)) {
+        echo "$fieldName is a required field.<br />\n";
+        ++$errorCount;
+    } else {
+        $retval = filter_var(($data), FILTER_SANITIZE_EMAIL);
+        if (!filter_var($retval, FILTER_VALIDATE_EMAIL)) {
+            echo "$fieldName is not a valid email address.<br />\n";
+            ++$errorCount;
+            $retval = ""; 
+        } else {
+            return $retval;
+        }
+    }
+}
+
+// Display the form / borrowed from 3a
+function displayForm($Sender, $Email, $Subject, $Message) {
+            ?> 
+            <h2 style = "text-align: center">Contact Me</h2>
+            <form name="contact" action="ContactForm.php" method="post">
+                <p>Your Name:
+                    <input type="text" name="Sender" value="<?php echo $Sender; ?>" /></p>
+                <p>Your Email:
+                    <input type="text" name="Email" value="<?php echo $Email; ?>" /></p>
+                <p>Your Subject:
+                    <input type="text" name="Subject" value="<?php echo $Subject; ?>" /></p>
+                <p>Your Message (50 to 150 Words):
+                    <input type="text" name="Message"><?php echo $Message; ?></textarea></p>
+                <p><input type="reset" value="Clear Form" />&nbsp; &nbsp;
+                    <input type="submit" name="Submit" value="Send Form" /></p>
+            </form>
+            <?php }
+        
+
+// Validates form was submitted using POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $Sender = validateInput($_POST['Sender'], "Your Name");
+    $Email = validateEmail($_POST['Email'], "Your Email");
+    $Subject = validateInput($_POST['Subject'], "Topic");
+    $Message = validateInput($_POST['Message'], "Message");
+
+    // Word count check
+    $wordCount = str_word_count($Message);
+    if ($wordCount < 50 || $wordCount > 150) {
+        echo "<p>Message must be between 50 and 150 words. You wrote $wordCount words.</p>\n";
+        ++$errorCount;
+    }
+
+    if ($errorCount === 0) {
+        $showForm = false;
+    }
+}
+
+// checks variable if any error tallys. If not, hides form and displays thank you message. 
+if ($showForm) {
+    if ($errorCount > 0) {
+        echo "<p>Please correct the following errors and resubmit the form:</p>\n";
+    }
+    displayForm($Sender, $Email, $Subject, $Message);
+} else {
+    echo "<h2>Thank you, " . $Sender . "!</h2>\n";
+    echo "<p>We received your message about: $Subject</p>\n";
+    echo "<p>We'll get back to you at $Email </p>\n";
+}
 
 ?>
 </body>
