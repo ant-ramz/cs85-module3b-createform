@@ -104,13 +104,14 @@ if ($showForm) {
     echo "<p>We received your message about: $Subject</p>\n";
     echo "<p>We'll get back to you at $Email </p>\n";
 }
-
  
+
 /*In Module 3B I borrowed heavily from 3A. Because of this, it was still a bit of a challenge, but it wasn't that bad.
   I modified the given functions to include htmlspecialchars as required and fixed some formating to make the code look more inline. 
   if ($_SERVER["REQUEST_METHOD"] === "POST") block was added on line 78 to confirm that form was submitted using the Post Method as required.
   The assignment asked to use GET or POST, whichever when appropriate. From the readings, we can determine that GET is more appropriate for search inquiries or small 
   amounts of data that is non-sensitive. While this form might have a trivial message sent, the email address and name of the person is sensitive data, so I felt that POST would be more appropriate. 
   */
+   ?>
 </body>
-</html>
+</html
