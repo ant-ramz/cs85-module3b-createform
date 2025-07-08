@@ -57,7 +57,7 @@ function validateEmail($data, $fieldName) {
 function displayForm($Sender, $Email, $Subject, $Message) {
     ?>
     <h2 style="text-align:center">Secure Product Contact <Form></Form></h2>
-    <form method="POST" action= "SecureProductForm.php">
+    <form method="POST" action= "<?php echo $_SERVER['PHP_SELF']; ?>"
         <p>Your Name:<br>
             <input type="text" name="Sender" value="<?= htmlspecialchars($Sender) ?>" required></p>
         <p>Your Email:<br>
@@ -105,5 +105,12 @@ if ($showForm) {
     echo "<p>We'll get back to you at $Email </p>\n";
 }
 
+ 
+/*In Module 3B I borrowed heavily from 3A. Because of this, it was still a bit of a challenge, but it wasn't that bad.
+  I modified the given functions to include htmlspecialchars as required and fixed some formating to make the code look more inline. 
+  if ($_SERVER["REQUEST_METHOD"] === "POST") block was added on line 78 to confirm that form was submitted using the Post Method as required.
+  The assignment asked to use GET or POST, whichever when appropriate. From the readings, we can determine that GET is more appropriate for search inquiries or small 
+  amounts of data that is non-sensitive. While this form might have a trivial message sent, the email address and name of the person is sensitive data, so I felt that POST would be more appropriate. 
+  */
 </body>
 </html>
